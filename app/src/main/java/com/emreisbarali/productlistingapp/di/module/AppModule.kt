@@ -1,4 +1,4 @@
-package com.emreisbarali.productlistingapp.di
+package com.emreisbarali.productlistingapp.di.module
 
 import com.emreisbarali.productlistingapp.BuildConfig
 import com.emreisbarali.productlistingapp.data.*

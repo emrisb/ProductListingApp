@@ -6,6 +6,7 @@ import com.emreisbarali.productlistingapp.SingleLiveEvent
 import com.emreisbarali.productlistingapp.data.ProductError
 import com.emreisbarali.productlistingapp.data.Resource
 import com.emreisbarali.productlistingapp.data.Status
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
@@ -30,12 +31,13 @@ abstract class BaseViewModel : ViewModel() {
     fun <T> callService(
         service: suspend () -> Resource<T>,
         success: (data: T?) -> Unit,
-        fail: (err: ProductError?) -> Unit = { error.postValue(it) }
+        fail: (err: ProductError?) -> Unit = { error.postValue(it) },
+        dispatcher: CoroutineDispatcher
     ) {
 
         showProgressDialog()
 
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher) {
             val result = service()
 
             when (result.status) {
