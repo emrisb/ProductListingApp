@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
+import com.emreisbarali.productlistingapp.R
 import com.emreisbarali.productlistingapp.extension.observeNotNull
 import com.emreisbarali.productlistingapp.ui.widgets.ProgressDialog
 
@@ -39,7 +40,7 @@ abstract class BaseActivity : AppCompatActivity() {
             }
 
             vm.error.observeNotNull(this) {
-                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.network_error), Toast.LENGTH_SHORT).show()
             }
         }
     }

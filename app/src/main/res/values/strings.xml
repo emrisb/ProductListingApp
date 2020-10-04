@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ProductListingApp</string>
+    <string name="network_error">"Bir hata oluştu. Lütfen tekrar deneyiniz."</string>
 </resources>

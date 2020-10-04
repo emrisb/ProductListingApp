@@ -3,6 +3,7 @@ package com.emreisbarali.productlistingapp.ui.base
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.emreisbarali.productlistingapp.SingleLiveEvent
+import com.emreisbarali.productlistingapp.data.ProductError
 import com.emreisbarali.productlistingapp.data.Resource
 import com.emreisbarali.productlistingapp.data.Status
 import kotlinx.coroutines.cancel
@@ -11,25 +12,25 @@ import kotlinx.coroutines.launch
 abstract class BaseViewModel : ViewModel() {
 
     val progressDialog: SingleLiveEvent<Boolean> = SingleLiveEvent()
-    val error: SingleLiveEvent<String> = SingleLiveEvent()
+    val error: SingleLiveEvent<ProductError> = SingleLiveEvent()
 
-    fun showProgressDialog() {
+    private fun showProgressDialog() {
         progressDialog.postValue(true)
     }
 
-    fun dismissProgressDialog() {
+    private fun dismissProgressDialog() {
         progressDialog.postValue(false)
     }
 
-    fun handleError() {
-        error.postValue("")
+    fun handleError(err: ProductError) {
+        error.postValue(err)
     }
 
 
     fun <T> callService(
         service: suspend () -> Resource<T>,
         success: (data: T?) -> Unit,
-        fail: (err: String?) -> Unit = { error.postValue(it) }
+        fail: (err: ProductError?) -> Unit = { error.postValue(it) }
     ) {
 
         showProgressDialog()
@@ -39,7 +40,7 @@ abstract class BaseViewModel : ViewModel() {
 
             when (result.status) {
                 Status.SUCCESS -> success(result.data)
-                Status.ERROR -> fail(result.message)
+                Status.ERROR -> fail(result.error)
             }
 
             dismissProgressDialog()
