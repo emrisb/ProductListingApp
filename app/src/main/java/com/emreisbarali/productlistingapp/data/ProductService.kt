@@ -12,6 +12,6 @@ interface ProductService {
     suspend fun getProductList(): ProductList
 
     @GET("cart/{product_id}/detail")
-    suspend fun getProductDetail(@Path("product_id") productId: Int): ProductListItem
+    suspend fun getProductDetail(@Path("product_id") productId: String): ProductListItem
 
 }

@@ -1,9 +1,10 @@
 package com.emreisbarali.productlistingapp.ui.base
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.observe
+import com.emreisbarali.productlistingapp.extension.observeNotNull
 import com.emreisbarali.productlistingapp.ui.widgets.ProgressDialog
 
 abstract class BaseActivity : AppCompatActivity() {
@@ -33,22 +34,22 @@ abstract class BaseActivity : AppCompatActivity() {
 
     private fun bindViewModel(viewModel: BaseViewModel?) {
         viewModel?.let { vm ->
-            vm.progressDialog.observe(this) {
+            vm.progressDialog.observeNotNull(this) {
                 if (it) showProgressDialog() else dismissProgressDialog()
             }
 
-            vm.error.observe(this) {
-                // showError
+            vm.error.observeNotNull(this) {
+                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
             }
         }
     }
 
 
-    fun showProgressDialog() {
+    private fun showProgressDialog() {
         if (!isFinishing && !progressDialog.isShowing) progressDialog.show()
     }
 
-    fun dismissProgressDialog() {
+    private fun dismissProgressDialog() {
         if (!isFinishing && progressDialog.isShowing) progressDialog.dismiss()
     }
 }
